@@ -1,0 +1,123 @@
+﻿@model List<RealEstateApp.Models.Property>
+
+@{
+    ViewData["Title"] = "İlan Listesi";
+}
+
+<div class="container-fluid mt-3 mb-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold text-secondary mb-0"><i class="fa fa-building me-2"></i> Gayrimenkul Portföyü</h3>
+        <a href="/Property/Create" class="btn btn-success shadow-sm rounded-pill px-4 fw-bold">
+            <i class="fa fa-plus me-1"></i> Yeni İlan Ekle
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4">
+
+        <div class="card-header bg-white border-bottom-0 pt-4 pb-2 px-4">
+            <form asp-action="Index" method="get" class="d-flex bg-light p-1 rounded-pill border align-items-center">
+                <i class="fa fa-search text-muted ms-3"></i>
+                <input type="text" name="keyword" class="form-control border-0 bg-transparent shadow-none px-3"
+                       placeholder="Başlık, konum veya türe göre ara..."
+                       value="@ViewBag.Keyword" />
+                <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">
+                    Ara
+                </button>
+                @if (!string.IsNullOrEmpty(ViewBag.Keyword))
+                {
+                    <a href="/Property/Index" class="btn btn-outline-secondary rounded-pill ms-2 px-4">Temizle</a>
+                }
+            </form>
+        </div>
+
+        <div class="card-body px-4 pb-4">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0" style="font-size: 0.9rem;">
+
+                    <thead class="table-light text-secondary text-nowrap">
+                        <tr>
+                            <th class="py-3">Görsel</th>
+                            <th class="py-3">Başlık</th>
+                            <th class="py-3">Tür</th>
+                            <th class="py-3">Konum</th>
+                            <th class="py-3">m²</th>
+                            <th class="py-3">Konut Tipi</th>
+                            <th class="py-3">Oda</th>
+                            <th class="py-3">Fiyat</th>
+                            <th class="py-3">Durum</th>
+                            <th class="py-3 text-center" style="width:140px">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody class="border-top-0">
+                        @if (Model != null && Model.Count > 0)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @if (item.Images != null && item.Images.Count > 0)
+                                        {
+                                            var coverImage = item.Images.First();
+                                            <img src="data:@coverImage.ContentType;base64,@Convert.ToBase64String(coverImage.ImageData)"
+                                                 class="shadow-sm" style="width:60px; height:45px; object-fit:cover; border-radius:6px;" />
+                                        }
+                                        else
+                                        {
+                                            <div class="bg-light rounded d-flex justify-content-center align-items-center shadow-sm" style="width:60px; height:45px; border-radius:6px;">
+                                                <i class="fa fa-image text-muted fs-5"></i>
+                                            </div>
+                                        }
+                                    </td>
+
+                                    <td class="fw-bold text-dark text-truncate" style="max-width: 150px;" title="@item.Title">@item.Title</td>
+
+                                    <td class="text-nowrap"><i class="fa fa-home text-muted me-1"></i>@item.Type</td>
+
+                                    <td class="text-truncate" style="max-width: 150px;" title="@item.Location"><i class="fa fa-map-marker-alt text-muted me-1"></i>@item.Location</td>
+
+                                    <td class="text-nowrap fw-bold text-secondary">@item.SquareMeters m²</td>
+
+                                    <td class="text-nowrap"><i class="fa fa-layer-group text-muted me-1"></i>@item.PropertyType</td>
+
+                                    <td class="text-nowrap"><i class="fa fa-door-open text-muted me-1"></i>@item.RoomCount</td>
+
+                                    <td class="text-nowrap fw-bold" style="color: #198a19;">@item.Price.ToString("C2")</td>
+
+                                    <td>
+                                        <span class="badge @(item.Status == "Yayında" ? "bg-success" : (item.Status == "Satıldı" ? "bg-danger" : "bg-warning text-dark")) px-2 py-1 rounded-pill">
+                                            @item.Status
+                                        </span>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a href="/Property/Details/@item.Id" class="btn btn-sm btn-outline-primary rounded-circle" title="Detayı İncele" style="width: 32px; height: 32px; padding: 4px;">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                            <a href="/Property/Update/@item.Id" class="btn btn-sm btn-outline-warning rounded-circle text-dark" title="İlanı Güncelle" style="width: 32px; height: 32px; padding: 4px;">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <a href="/Property/Delete/@item.Id" class="btn btn-sm btn-outline-danger rounded-circle" title="İlanı Sil" onclick="return confirm('İlanı silmek istediğinize emin misiniz?');" style="width: 32px; height: 32px; padding: 4px;">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="10" class="text-center py-5 text-muted">
+                                    <i class="fa fa-search-minus fs-2 mb-3 d-block"></i>
+                                    Aramanızla eşleşen ilan bulunamadı.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

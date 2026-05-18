@@ -1,0 +1,122 @@
+﻿@model RealEstateApp.Models.Property
+@{
+    ViewData["Title"] = "İlanı Güncelle";
+}
+
+<div class="container mt-4 mb-5">
+    <div class="card shadow">
+        <div class="card-header bg-warning text-dark fw-bold">
+            <h4 class="mb-0"><i class="fa fa-edit"></i> İlan Bilgilerini Güncelle</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Update" method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Başlık</label>
+                    <input asp-for="Title" class="form-control" required />
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Tür</label>
+                        <select asp-for="Type" class="form-select">
+                            <option value="Satılık">Satılık</option>
+                            <option value="Kiralık">Kiralık</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Fiyat</label>
+                        <input asp-for="Price" type="number" class="form-control" required />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Metrekare (m²)</label>
+                    <input asp-for="SquareMeters" type="number" class="form-control" placeholder="Örn: 120" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Konut Tipi</label>
+                    <select asp-for="PropertyType" class="form-control" required>
+                        <option value="">Seçiniz...</option>
+                        <option value="Daire">Daire</option>
+                        <option value="Villa">Villa</option>
+                        <option value="Müstakil Ev">Müstakil Ev</option>
+                        <option value="Rezidans">Rezidans</option>
+                        <option value="İşyeri / Ofis">İşyeri / Ofis</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Oda Sayısı</label>
+                    <input asp-for="RoomCount" type="text" class="form-control" placeholder="Örn: 3+1 veya 2+1" required />
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Konum</label>
+                        <input asp-for="Location" class="form-control" required />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Durum</label>
+                        <select asp-for="Status" class="form-select">
+                            <option value="Yayında">Yayında</option>
+                            <option value="Satıldı">Satıldı</option>
+                            <option value="Kiralandı">Kiralandı</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="card mb-4 border-secondary">
+                    <div class="card-header bg-light fw-bold text-secondary">
+                        <i class="fa fa-images"></i> Görsel Yönetimi
+                    </div>
+                    <div class="card-body">
+
+                        <label class="form-label fw-bold">Mevcut Görseller (Silmek istediklerinizi işaretleyin)</label>
+                        <div class="row mb-3 border p-3 rounded bg-light">
+                            @if (Model.Images != null && Model.Images.Count > 0)
+                            {
+                                foreach (var img in Model.Images)
+                                {
+                                    <div class="col-md-3 mb-3 text-center">
+                                        <img src="data:@img.ContentType;base64,@Convert.ToBase64String(img.ImageData)"
+                                             class="img-thumbnail shadow-sm" style="height:120px; object-fit:cover; width:100%;" />
+
+                                        <div class="form-check mt-2 d-flex justify-content-center align-items-center">
+                                            <input class="form-check-input border-danger me-2" type="checkbox" name="deletedImageIds" value="@img.Id" id="delete_@img.Id" style="cursor:pointer; transform: scale(1.3);">
+                                            <label class="form-check-label text-danger fw-bold" for="delete_@img.Id" style="cursor:pointer;">
+                                                Bu Görseli Sil
+                                            </label>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-12 text-center text-muted">
+                                    <i>Bu ilanda henüz görsel bulunmuyor.</i>
+                                </div>
+                            }
+                        </div>
+
+                        <label class="form-label fw-bold text-primary">Yeni Görsel Ekle (Çoklu seçim yapabilirsiniz)</label>
+                        <input type="file" name="newImages" class="form-control border-primary" accept="image/*" multiple />
+                        <small class="text-muted">Mevcut resimleri değiştirmek istemiyorsanız veya yeni resim eklemeyecekseniz bu alanı boş bırakın.</small>
+
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Açıklama</label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="/Property/Index" class="btn btn-secondary">Vazgeç</a>
+                    <button type="submit" class="btn btn-warning px-4 fw-bold">Değişiklikleri Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+﻿@model RealEstateApp.Models.Property
+
+@{
+    ViewData["Title"] = "Yeni İlan Ekle";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0"><i class="fa fa-plus-circle"></i> Yeni Gayrimenkul Kaydı</h4>
+                </div>
+                <div class="card-body bg-light">
+                    <!-- ÖNEMLİ: Resim yüklemek için enctype="multipart/form-data" eklenmelidir -->
+                    <form asp-action="Create" method="post" enctype="multipart/form-data">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">İlan Başlığı</label>
+                            <input asp-for="Title" class="form-control" placeholder="Örn: Çankaya'da Lüx 3+1" required />
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">İlan Türü</label>
+                                <select asp-for="Type" class="form-select">
+                                    <option value="Satılık">Satılık</option>
+                                    <option value="Kiralık">Kiralık</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Fiyat</label>
+                                <input asp-for="Price" type="number" class="form-control" placeholder="0.00" required />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Metrekare (m²)</label>
+                            <input asp-for="SquareMeters" type="number" class="form-control" placeholder="Örn: 120" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Konut Tipi</label>
+                            <select asp-for="PropertyType" class="form-control" required>
+                                <option value="">Seçiniz...</option>
+                                <option value="Daire">Daire</option>
+                                <option value="Villa">Villa</option>
+                                <option value="Müstakil Ev">Müstakil Ev</option>
+                                <option value="Rezidans">Rezidans</option>
+                                <option value="İşyeri / Ofis">İşyeri / Ofis</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Oda Sayısı</label>
+                            <input asp-for="RoomCount" type="text" class="form-control" placeholder="Örn: 3+1 veya 2+1" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Konum</label>
+                            <input asp-for="Location" class="form-control" placeholder="Şehir, İlçe, Mahalle" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Durum</label>
+                            <select asp-for="Status" class="form-select">
+                                <option value="Yayında">Yayında</option>
+                                <option value="Satıldı">Satıldı</option>
+                                <option value="Kiralandı">Kiralandı</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Açıklama</label>
+                            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                        </div>
+
+                        <!-- Resim Yükleme Alanı -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-primary">Gayrimenkul Fotoğrafı </label>
+                            <input type="file" name="imageFiles" class="form-control" accept="image/*" multiple />                            <small class="text-muted">Doğrudan veritabanında binary formatta saklanacaktır.</small>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="/Property/Index" class="btn btn-secondary me-md-2">İptal</a>
+                            <button type="submit" class="btn btn-success px-5">İlanı Yayınla</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

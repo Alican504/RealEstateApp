@@ -1,0 +1,139 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kayıt Ol - Emlak Yönetim Paneli</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+    <style>
+        body {
+            /* Giriş ekranında kullandığımız aynı şık arka plan ve karartma */
+            background: linear-gradient(rgba(30, 40, 50, 0.75), rgba(30, 40, 50, 0.75)), url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .register-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            padding: 45px 40px;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .register-icon {
+            font-size: 55px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+            .register-icon .fa-plus {
+                font-size: 24px;
+                position: absolute;
+                bottom: 5px;
+                right: -10px;
+                color: #27ae60;
+                text-shadow: 2px 2px 0px #fff;
+            }
+
+        .form-control {
+            background-color: #f4f7f6;
+            border: 1px solid #dce3e6;
+            border-radius: 8px;
+            padding: 14px 15px;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+            .form-control:focus {
+                background-color: #fff;
+                border-color: #27ae60;
+                box-shadow: 0 0 0 0.25rem rgba(39, 174, 96, 0.25);
+            }
+
+        .btn-register {
+            background-color: #27ae60; /* Kayıt olmak için güven veren yeşil ton */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 14px;
+            font-weight: bold;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+            .btn-register:hover {
+                background-color: #219653;
+                color: white;
+            }
+
+        .login-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+            .login-link:hover {
+                text-decoration: underline;
+                color: #2980b9;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="register-card text-center">
+
+        <div class="register-icon">
+            <i class="fa fa-user-tie"></i>
+            <i class="fa fa-plus"></i>
+        </div>
+        <h3 class="fw-bold mb-4" style="color: #2c3e50;">Yeni Danışman Kaydı</h3>
+
+        <form asp-action="Register" asp-controller="Account" method="post">
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger text-start py-2 px-3 mb-4 rounded-3 border-0" style="font-size: 14px; background-color: #fee2e2; color: #991b1b;">
+                    <i class="fa fa-exclamation-circle me-1"></i> @ViewBag.Error
+                </div>
+            }
+
+            <div class="text-start">
+                <input type="text" name="FullName" class="form-control" placeholder="Adınız Soyadınız" required autofocus />
+            </div>
+
+            <div class="text-start">
+                <input type="text" name="Username" class="form-control" placeholder="Kullanıcı Adı" required />
+            </div>
+
+            <div class="text-start">
+                <input type="password" name="Password" class="form-control" placeholder="Şifre" required />
+            </div>
+
+            <button type="submit" class="btn btn-register mb-4 shadow-sm">Kayıt Ol</button>
+        </form>
+
+        <div class="mt-1">
+            <a href="/Account/Login" class="login-link">Zaten hesabınız var mı? Giriş Yap</a>
+        </div>
+
+    </div>
+
+</body>
+</html>

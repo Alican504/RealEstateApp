@@ -1,0 +1,124 @@
+﻿@model RealEstateApp.Models.User
+@{
+    ViewData["Title"] = "Danışman Profilim";
+    // Controller'dan gelen son ilanları listeye çeviriyoruz
+    var recentProperties = ViewBag.RecentProperties as List<RealEstateApp.Models.Property>;
+}
+
+<div class="container mt-4 mb-5">
+
+    <div class="card shadow-sm border-0 rounded-3 mb-4 overflow-hidden">
+        <div style="height: 140px; background: linear-gradient(90deg, #2c3e50 0%, #3498db 100%);"></div>
+        <div class="card-body text-center position-relative pb-4">
+
+            <div class="position-absolute top-0 start-50 translate-middle" style="margin-top: -20px;">
+                <div class="bg-white p-2 rounded-circle shadow-sm">
+                    @if (Model.ProfilePhoto != null)
+                    {
+                        <img src="data:@Model.ProfilePhotoType;base64,@Convert.ToBase64String(Model.ProfilePhoto)"
+                             class="rounded-circle border" style="width: 100px; height: 100px; object-fit: cover;" alt="Profil Fotoğrafı" />
+                    }
+                    else
+                    {
+                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center border" style="width: 100px; height: 100px;">
+                            <i class="fa fa-user-tie text-secondary" style="font-size: 50px;"></i>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div style="margin-top: 55px;">
+                <h3 class="fw-bold text-dark mb-0">@Model.FullName</h3>
+                <p class="text-muted mb-3"><i class="fa fa-at"></i>@Model.Username</p>
+                <div class="mb-3">
+                    <span class="badge bg-dark px-3 py-2 rounded-pill shadow-sm"><i class="fa fa-star text-warning me-1"></i> Yetkili Emlak Danışmanı</span>
+                </div>
+
+                <div class="mt-2">
+                    <a href="/Account/EditProfile" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold">
+                        <i class="fa fa-cog me-1"></i> Profili Düzenle
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm border-0 rounded-3 h-100">
+                <div class="card-header bg-white border-0 pt-4 pb-0">
+                    <h5 class="fw-bold text-secondary"><i class="fa fa-chart-pie me-2"></i> Portföy Özeti</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
+                            <span class="fw-bold text-dark"><i class="fa fa-list text-primary w-20"></i> Toplam İlan</span>
+                            <span class="badge bg-primary rounded-pill fs-6 px-3">@ViewBag.TotalProperties</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
+                            <span class="fw-bold text-dark"><i class="fa fa-check-circle text-success w-20"></i> Yayında</span>
+                            <span class="badge bg-success rounded-pill fs-6 px-3">@ViewBag.ActiveProperties</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
+                            <span class="fw-bold text-dark"><i class="fa fa-handshake text-danger w-20"></i> Satıldı / Kiralandı</span>
+                            <span class="badge bg-danger rounded-pill fs-6 px-3">@ViewBag.SoldProperties</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8 mb-4">
+            <div class="card shadow-sm border-0 rounded-3 h-100">
+                <div class="card-header bg-white border-0 pt-4 pb-0 d-flex justify-content-between align-items-center">
+                    <h5 class="fw-bold text-secondary"><i class="fa fa-clock me-2"></i> Son Eklenen İlanlar</h5>
+                    <a href="/Property/Index" class="btn btn-sm btn-outline-primary">Tümünü Gör</a>
+                </div>
+                <div class="card-body">
+                    @if (recentProperties != null && recentProperties.Count > 0)
+                    {
+                        <div class="row">
+                            @foreach (var prop in recentProperties)
+                            {
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100 border-light shadow-sm text-decoration-none">
+                                        @if (prop.Images != null && prop.Images.Count > 0)
+                                        {
+                                            var cover = prop.Images.First();
+                                            <img src="data:@cover.ContentType;base64,@Convert.ToBase64String(cover.ImageData)"
+                                                 class="card-img-top" style="height: 140px; object-fit: cover;" alt="İlan Görseli">
+                                        }
+                                        else
+                                        {
+                                            <div class="bg-light d-flex justify-content-center align-items-center" style="height: 140px;">
+                                                <i class="fa fa-image text-muted fs-3"></i>
+                                            </div>
+                                        }
+                                        <div class="card-body p-2 text-center">
+                                            <h6 class="card-title text-truncate mb-1 text-dark" style="font-size: 0.95rem;" title="@prop.Title">@prop.Title</h6>
+                                            <span class="badge @(prop.Status == "Yayında" ? "bg-success" : (prop.Status == "Satıldı" ? "bg-danger" : "bg-warning text-dark"))" style="font-size: 0.75rem;">
+                                                @prop.Status
+                                            </span>
+                                            <div class="mt-2 fw-bold text-primary" style="font-size: 0.9rem;">@prop.Price.ToString("C2")</div>
+                                        </div>
+                                        <div class="card-footer p-0 bg-white border-top-0">
+                                            <a href="/Property/Details/@prop.Id" class="btn btn-sm btn-light w-100 text-secondary border-top"><i class="fa fa-eye"></i> İncele</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-light text-center border mt-3 py-4">
+                            <i class="fa fa-folder-open text-muted mb-2 fs-2 d-block"></i>
+                            <h6 class="text-muted">Henüz hiç ilan eklemediniz.</h6>
+                            <a href="/Property/Create" class="btn btn-sm btn-primary mt-2">İlk İlanı Ekle</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

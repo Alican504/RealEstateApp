@@ -1,0 +1,62 @@
+﻿@model List<RealEstateApp.Models.Property>
+@{
+    ViewData["Title"] = ViewBag.AgentName + " Portföyü";
+}
+
+<div class="container mt-4 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+        <h3 class="text-secondary fw-bold"><i class="fa fa-briefcase me-2"></i> @ViewBag.AgentName Portföyü</h3>
+        <a href="/Account/SearchAgent" class="btn btn-secondary btn-sm"><i class="fa fa-arrow-left"></i> Aramaya Dön</a>
+    </div>
+
+    @if (Model != null && Model.Count > 0)
+    {
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        @if (item.Images != null && item.Images.Count > 0)
+                        {
+                            var coverImage = item.Images.First();
+                            <img src="data:@coverImage.ContentType;base64,@Convert.ToBase64String(coverImage.ImageData)"
+                                 class="card-img-top" style="height: 200px; object-fit: cover;" alt="İlan">
+                        }
+                        else
+                        {
+                            <div class="bg-light d-flex justify-content-center align-items-center" style="height: 200px;">
+                                <i class="fa fa-image text-muted" style="font-size: 50px;"></i>
+                            </div>
+                        }
+
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 class="card-title fw-bold text-dark text-truncate" style="max-width: 70%;" title="@item.Title">@item.Title</h5>
+                                <span class="badge @(item.Status == "Yayında" ? "bg-success" : (item.Status == "Satıldı" ? "bg-danger" : "bg-warning text-dark"))">
+                                    @item.Status
+                                </span>
+                            </div>
+                            <h4 class="text-primary fw-bold mb-3">@item.Price.ToString("C2")</h4>
+
+                            <p class="card-text text-muted small mb-1"><i class="fa fa-map-marker-alt me-1"></i> @item.Location</p>
+                            <p class="card-text text-muted small"><i class="fa fa-home me-1"></i> @item.Type</p>
+                        </div>
+
+                        <div class="card-footer bg-white border-top-0 pt-0">
+                            <a href="/Property/Details/@item.Id" class="btn btn-outline-dark w-100 fw-bold">
+                                <i class="fa fa-search me-1"></i> Detayları İncele
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center shadow-sm py-4">
+            <i class="fa fa-info-circle fs-3 d-block mb-2 text-warning"></i>
+            Bu danışmanın şu anda sergilediği bir ilanı bulunmuyor.
+        </div>
+    }
+</div>
