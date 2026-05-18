@@ -1,4 +1,4 @@
-﻿@model RealEstateApp.Models.Property
+@model RealEstateApp.Models.Property
 
 @{
     ViewData["Title"] = "Yeni İlan Ekle";
@@ -12,7 +12,6 @@
                     <h4 class="mb-0"><i class="fa fa-plus-circle"></i> Yeni Gayrimenkul Kaydı</h4>
                 </div>
                 <div class="card-body bg-light">
-                    <!-- ÖNEMLİ: Resim yüklemek için enctype="multipart/form-data" eklenmelidir -->
                     <form asp-action="Create" method="post" enctype="multipart/form-data">
 
                         <div class="mb-3">
@@ -75,7 +74,6 @@
                             <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                         </div>
 
-                        <!-- Resim Yükleme Alanı -->
                         <div class="mb-4">
                             <label class="form-label fw-bold text-primary">Gayrimenkul Fotoğrafı </label>
                             <input type="file" name="imageFiles" class="form-control" accept="image/*" multiple />                            <small class="text-muted">Doğrudan veritabanında binary formatta saklanacaktır.</small>

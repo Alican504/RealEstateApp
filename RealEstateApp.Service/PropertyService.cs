@@ -1,4 +1,4 @@
-﻿using RealEstateApp.DAL;
+using RealEstateApp.DAL;
 using RealEstateApp.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,6 @@ namespace RealEstateApp.Service
     {
         private readonly AppDbContext _context;
 
-        // Constructor: Veritabanı bağlamını (DbContext) içeri alıyoruz (Dependency Injection)
         public PropertyService(AppDbContext context)
         {
             _context = context;
@@ -23,7 +22,6 @@ namespace RealEstateApp.Service
 
         public List<Property> Search(int userId, string keyword)
         {
-            // Include(p => p.Images) -> "İlanı çekerken, ona bağlı olan fotoğrafları da getir" demek
             var userProperties = _context.Properties
                                          .Include(p => p.Images)
                                          .Where(p => p.UserId == userId)
@@ -41,7 +39,6 @@ namespace RealEstateApp.Service
 
         public Property GetById(int id)
         {
-            // Include ile ilanın fotoğraflarını da veritabanından çekmesini söylüyoruz
             return _context.Properties
                            .Include(p => p.Images)
                            .FirstOrDefault(p => p.Id == id);
@@ -50,7 +47,7 @@ namespace RealEstateApp.Service
         public void Add(Property property)
         {
             _context.Properties.Add(property);
-            _context.SaveChanges(); // Değişiklikleri veritabanına kaydet
+            _context.SaveChanges();
         }
 
         public void Update(Property property)
